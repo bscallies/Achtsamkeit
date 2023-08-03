@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Achtsamkeit.Backend;
 
-public interface ISessionHandler
+namespace Achtsamkeit.Backend
 {
-    void SaveSession(Session session);
-    List<Session> LoadSessions();
+    public interface ISessionHandler
+    {
+        void SaveSession(Session session);
+        List<Session> LoadSessions();
+    }
 }
-
