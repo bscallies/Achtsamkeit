@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Achtsamkeit.Backend;
 
 namespace Achtsamkeit
 {
@@ -61,12 +62,14 @@ namespace Achtsamkeit
                 labelTimerDisplay.Text = "00h 00m 00s";
 
                 timer1.Start();
+
+                string subCategory = selectedNode.FirstNode != null ? selectedNode.FirstNode.Text : "";
                 Session session = new Session
                 {
                     StartTime = DateTime.Now,
                     Duration = new TimeSpan(0), 
-                    Category = selectedCategory,   
-                    //SubCategory = "Programming",  
+                    Category = selectedCategory,
+                    SubCategory = subCategory, 
                     Date = DateTime.Today
                 };
 
