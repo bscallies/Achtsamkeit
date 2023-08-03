@@ -64,15 +64,7 @@ namespace Achtsamkeit
                 timer1.Start();
 
                 string subCategory = selectedNode.FirstNode != null ? selectedNode.FirstNode.Text : "";
-                Session session = new Session
-                {
-                    StartTime = DateTime.Now,
-                    Duration = new TimeSpan(0), 
-                    Category = selectedCategory,
-                    SubCategory = subCategory, 
-                    Date = DateTime.Today
-                };
-
+                Session session = new Session(DateTime.Now, new TimeSpan(0), selectedCategory, subCategory);
             }
             else
             {
