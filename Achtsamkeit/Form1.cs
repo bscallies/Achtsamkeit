@@ -14,11 +14,14 @@ namespace Achtsamkeit
     {
         private string selectedCategory;
         public static int ElapsedTimeInSeconds { get; set; }
+        private ISessionHandler sessionHandler;
         public GUI()
         {
             InitializeComponent();
+
             timer1.Tick += timer1_Tick;
             FormFunctions.SetTodayDate(this, labelTodayDate);
+            sessionHandler = new SessionFileHandler("Backend/SessionData.txt");
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -58,6 +61,15 @@ namespace Achtsamkeit
                 labelTimerDisplay.Text = "00h 00m 00s";
 
                 timer1.Start();
+                Session session = new Session
+                {
+                    StartTime = DateTime.Now,
+                    Duration = new TimeSpan(0), 
+                    Category = selectedCategory,   
+                    //SubCategory = "Programming",  
+                    Date = DateTime.Today
+                };
+
             }
             else
             {
