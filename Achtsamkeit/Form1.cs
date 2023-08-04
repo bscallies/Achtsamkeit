@@ -13,7 +13,7 @@ namespace Achtsamkeit
 {
     public partial class GUI : Form
     {
-        private string selectedCategory;
+        //private string selectedCategory;
         public static int ElapsedTimeInSeconds { get; set; }
         private ISessionHandler sessionHandler;
         private Session currentSession;
@@ -24,8 +24,11 @@ namespace Achtsamkeit
 
             timer1.Tick += timer1_Tick;
             FormFunctions.SetTodayDate(this, labelTodayDate);
-            sessionHandler = new SessionFileHandler("Backend/SessionData.txt");
+
+            string dataPath = "SessionData.txt"; //Changed path
+            sessionHandler = new SessionFileHandler(dataPath);
         }
+
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -39,7 +42,10 @@ namespace Achtsamkeit
 
         private void GUI_Load(object sender, EventArgs e)
         {
-            List<Session> sessions = sessionHandler.LoadSessions();
+            treeViewCategories.Nodes.Add("Work");
+            treeViewCategories.Nodes.Add("Recreation");
+            treeViewCategories.Nodes.Add("Goal Focus");
+            /*List<Session> sessions = sessionHandler.LoadSessions();
 
             foreach (var session in sessions)
             {
@@ -61,7 +67,7 @@ namespace Achtsamkeit
                         categoryNode.Nodes.Add(session.SubCategory);
                     }
                 }
-            }
+            }*/
         }
 
         private void label4_Click(object sender, EventArgs e)
@@ -75,107 +81,85 @@ namespace Achtsamkeit
 
         private void btnBegin_Click(object sender, EventArgs e)
         {
-            // Check if a category and subcategory are selected, if so begin a new session
-            // selectedCategory and selectedSubCategory are assumed to be the currently selected category and subcategory
-            sessionManager.BeginSession(selectedCategory, selectedSubCategory);
-        }
+            TreeNode selectedNode = treeViewCategories.SelectedNode;
 
-
-        /*
-        TreeNode selectedNode = treeViewCategories.SelectedNode;
-
-        if (selectedNode != null)
-        {
-            string selectedCategory;
-            string selectedSubCategory;
-            if (selectedNode.Parent != null)
+            if (selectedNode != null)
             {
-                selectedCategory = selectedNode.Parent.Text;
-                selectedSubCategory = selectedNode.Text;
+                // Extract Category and Subcategory from the selected node
+                string category, subcategory;
+                if (selectedNode.Parent == null)
+                {
+                    // This is a root node, meaning it's a category
+                    category = selectedNode.Text;
+                    subcategory = "General"; // Default subcategory
+                }
+                else
+                {
+                    // This is a child node, meaning it's a subcategory
+                    category = selectedNode.Parent.Text;
+                    subcategory = selectedNode.Text;
+                }
+
+                // Update UI
+                labelTimerCategory.Text = $"Timer for: {category} - {subcategory}";
+                ElapsedTimeInSeconds = 0;
+                labelTimerDisplay.Text = "00h 00m 00s";
+
+                // Start the session
+                timer1.Start();
+                currentSession = new Session(DateTime.Now, new TimeSpan(0), category, subcategory);
+
+                btnBegin.Text = "Switch Focus";
+                btnBegin.BackColor = Color.Yellow;
+                btnHalt.BackColor = Color.Red;
             }
             else
             {
-                selectedCategory = selectedNode.Text;
-                selectedSubCategory = ""; // no subcategory selected
+                MessageBox.Show("Please select a category before clicking Begin.", "Category Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
-            //selectedCategory = selectedNode.Text;
-            labelTimerCategory.Text = "Session focus: " + selectedCategory;
-            ElapsedTimeInSeconds = 0;
-            labelTimerDisplay.Text = "00h 00m 00s";
-
-            timer1.Start();
-
-            string subCategory = selectedNode.FirstNode != null ? selectedNode.FirstNode.Text : "";
-            Session session = new Session(DateTime.Now, new TimeSpan(0), selectedCategory, subCategory);
-            currentSession = new Session
-            {
-                StartTime = DateTime.Now,
-                Duration = new TimeSpan(0),
-                Category = selectedCategory,
-                SubCategory = selectedSubCategory,
-                Date = DateTime.Today
-            };
-
-            btnBegin.Text = "Switch session focus";
-            btnBegin.BackColor = Color.Yellow;
-            btnHalt.BackColor = Color.Red;
         }
-        else
-        {
-            MessageBox.Show("Please select a category before clicking Begin.", "Category Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-        } */
 
-        /*if (btnBegin.Text == "Begin")
+        private void timer1_Tick(object sender, EventArgs e)
         {
-            // Start timer
-            btnBegin.Text = "Switch session focus";
-            btnBegin.BackColor = Color.Yellow; // Or any color you prefer
-        }
-        else
-        {
-            // Pause timer
-            btnBegin.Text = "Begin";
-            btnBegin.BackColor = Color.Green; // Or any color you prefer
-        }*/
-    //}
-    private void timer1_Tick(object sender, EventArgs e)
-        {
-            //FormFunctions.Timer_Tick(sender, e, labelTimerDisplay);
-            FormFunctions.Timer_Tick(sender, e, labelTimerDisplay);
             if (currentSession != null)
             {
-                // Increase session duration by 1 minute
-                currentSession.Duration = currentSession.Duration.Add(TimeSpan.FromMinutes(1));
-
-                // Save updated session
-                // Assuming sessionHandler is your ISessionHandler instance
+                ElapsedTimeInSeconds++;
+                currentSession.Duration = TimeSpan.FromSeconds(ElapsedTimeInSeconds);
+                labelTimerDisplay.Text = currentSession.Duration.ToString(@"hh\:mm\:ss");
+                Console.WriteLine("Timer ticked. Saving session."); // Debugging
                 sessionHandler.SaveSession(currentSession);
             }
+            /* //FormFunctions.Timer_Tick(sender, e, labelTimerDisplay);
+             FormFunctions.Timer_Tick(sender, e, labelTimerDisplay);
+             if (currentSession != null)
+             {
+                 // Increase session duration by 1 minute
+                 currentSession.Duration = currentSession.Duration.Add(TimeSpan.FromMinutes(1));
 
-            //Application.DoEvents();
-            //MessageBox.Show("(test code)Timer activated successfully!");
+                 // Save updated session
+                 // Assuming sessionHandler is your ISessionHandler instance
+                 sessionHandler.SaveSession(currentSession);
+             }
+
+             //Application.DoEvents();
+             //MessageBox.Show("(test code)Timer activated successfully!");
+            */
         }
 
 
 
-        private void label2_Click(object sender, EventArgs e)
-        {
+        private void label2_Click(object sender, EventArgs e)        {
+
 
         }
 
-        private void treeViewCategories_AfterSelect(object sender, TreeViewEventArgs e)
-        {
-
+        private void treeViewCategories_AfterSelect(object sender, TreeViewEventArgs e)       {
         }
 
-        private void label6_Click(object sender, EventArgs e)
-        {
-
+        private void label6_Click(object sender, EventArgs e)        {
         }
 
-        private void label6_Click_1(object sender, EventArgs e)
-        {
-
+        private void label6_Click_1(object sender, EventArgs e)        {
         }
 
         private void btnHalt_Click(object sender, EventArgs e)
