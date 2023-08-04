@@ -108,7 +108,6 @@ namespace Achtsamkeit
             this.label4.Size = new System.Drawing.Size(283, 78);
             this.label4.TabIndex = 6;
             this.label4.Text = resources.GetString("label4.Text");
-            //this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // btnBegin
             // 
@@ -132,7 +131,7 @@ namespace Achtsamkeit
             // labelTodayDate
             // 
             this.labelTodayDate.AutoSize = true;
-            this.labelTodayDate.Location = new System.Drawing.Point(345, 9);
+            this.labelTodayDate.Location = new System.Drawing.Point(373, 18);
             this.labelTodayDate.Name = "labelTodayDate";
             this.labelTodayDate.Size = new System.Drawing.Size(35, 13);
             this.labelTodayDate.TabIndex = 9;
@@ -176,8 +175,9 @@ namespace Achtsamkeit
             // textBoxTodayUsage
             // 
             this.textBoxTodayUsage.Location = new System.Drawing.Point(376, 73);
+            this.textBoxTodayUsage.Multiline = true;
             this.textBoxTodayUsage.Name = "textBoxTodayUsage";
-            this.textBoxTodayUsage.Size = new System.Drawing.Size(100, 20);
+            this.textBoxTodayUsage.Size = new System.Drawing.Size(181, 457);
             this.textBoxTodayUsage.TabIndex = 13;
             // 
             // GUI

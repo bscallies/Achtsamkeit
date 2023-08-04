@@ -21,28 +21,48 @@ namespace Achtsamkeit.Backend
 
         public void SaveSession(Session session)
         {
-            List<Session> sessions = new List<Session>();
-            string jsonData; // Declare jsonData here
+            List<Session> sessions = LoadSessions();
+            sessions.Add(session);
+            string jsonData = JsonConvert.SerializeObject(sessions, Formatting.Indented);
+            File.WriteAllText(_filePath, jsonData);
+            /*List<Session> sessions = new List<Session>();
+            string jsonData;
 
             if (File.Exists(_filePath))
             {
-                jsonData = File.ReadAllText(_filePath); // Assign to jsonData here, don't declare it again
+                jsonData = File.ReadAllText(_filePath); 
                 sessions = JsonConvert.DeserializeObject<List<Session>>(jsonData);
             }
 
             sessions.Add(session);
-            jsonData = JsonConvert.SerializeObject(sessions, Formatting.Indented); // Assign to jsonData here, don't declare it again
-            File.WriteAllText(_filePath, jsonData);
+            jsonData = JsonConvert.SerializeObject(sessions, Formatting.Indented); 
+            File.WriteAllText(_filePath, jsonData);*/
         }
 
         public List<Session> LoadSessions()
         {
-            if (!File.Exists(_filePath))
-                return new List<Session>(); // return an empty list if the file doesn't exist
+            List<Session> sessions = new List<Session>();
 
-            string jsonData = File.ReadAllText(_filePath);
-            List<Session> sessions = JsonConvert.DeserializeObject<List<Session>>(jsonData);
-            return sessions ?? new List<Session>(); // return the deserialized sessions or an empty list if deserialization results in null
+            if (File.Exists(_filePath))
+            {
+                string jsonData = File.ReadAllText(_filePath);
+
+                try
+                {
+                    sessions = JsonConvert.DeserializeObject<List<Session>>(jsonData);
+                }
+                catch (JsonSerializationException)
+                {
+                    var singleSession = JsonConvert.DeserializeObject<Session>(jsonData);
+
+                    if (singleSession != null)
+                    {
+                        sessions.Add(singleSession);
+                    }
+                }
+            }
+
+            return sessions;
         }
         public Dictionary<string, TimeSpan> GetTodayUsageByCategory()
         {
