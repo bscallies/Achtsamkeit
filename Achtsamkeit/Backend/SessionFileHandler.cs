@@ -21,7 +21,17 @@ namespace Achtsamkeit.Backend
 
         public void SaveSession(Session session)
         {
-            string jsonData = JsonConvert.SerializeObject(session, Formatting.Indented);
+            List<Session> sessions = new List<Session>();
+            string jsonData; // Declare jsonData here
+
+            if (File.Exists(_filePath))
+            {
+                jsonData = File.ReadAllText(_filePath); // Assign to jsonData here, don't declare it again
+                sessions = JsonConvert.DeserializeObject<List<Session>>(jsonData);
+            }
+
+            sessions.Add(session);
+            jsonData = JsonConvert.SerializeObject(sessions, Formatting.Indented); // Assign to jsonData here, don't declare it again
             File.WriteAllText(_filePath, jsonData);
         }
 
