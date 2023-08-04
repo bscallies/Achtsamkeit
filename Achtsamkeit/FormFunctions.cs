@@ -1,4 +1,5 @@
-﻿using System;
+﻿//FormFunctions.cs
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,6 +31,10 @@ namespace Achtsamkeit
             int seconds = elapsedTimeInSeconds % 60;
 
             return $"{hours:D2}h {minutes:D2}m {seconds:D2}s";
+        }
+        public static string FormatTimespanIntoDigitalClock(TimeSpan timespan)
+        {
+            return timespan.ToString(@"hh\:mm\:ss");
         }
     }
 }

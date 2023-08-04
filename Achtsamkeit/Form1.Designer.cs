@@ -47,6 +47,7 @@ namespace Achtsamkeit
             this.labelTimerDisplay = new System.Windows.Forms.Label();
             this.labelTimerCategory = new System.Windows.Forms.Label();
             this.btnHalt = new System.Windows.Forms.Button();
+            this.textBoxTodayUsage = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // label1
@@ -64,7 +65,6 @@ namespace Achtsamkeit
             this.treeViewCategories.Name = "treeViewCategories";
             this.treeViewCategories.Size = new System.Drawing.Size(266, 210);
             this.treeViewCategories.TabIndex = 1;
-            this.treeViewCategories.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this.treeViewCategories_AfterSelect);
             // 
             // label2
             // 
@@ -74,7 +74,6 @@ namespace Achtsamkeit
             this.label2.Size = new System.Drawing.Size(102, 13);
             this.label2.TabIndex = 2;
             this.label2.Text = "Add a subcategory: ";
-            this.label2.Click += new System.EventHandler(this.label2_Click);
             // 
             // textBoxNewSubcategory
             // 
@@ -109,7 +108,7 @@ namespace Achtsamkeit
             this.label4.Size = new System.Drawing.Size(283, 78);
             this.label4.TabIndex = 6;
             this.label4.Text = resources.GetString("label4.Text");
-            this.label4.Click += new System.EventHandler(this.label4_Click);
+            //this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // btnBegin
             // 
@@ -147,22 +146,22 @@ namespace Achtsamkeit
             // labelTimerDisplay
             // 
             this.labelTimerDisplay.AutoSize = true;
+            this.labelTimerDisplay.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelTimerDisplay.Location = new System.Drawing.Point(236, 469);
             this.labelTimerDisplay.Name = "labelTimerDisplay";
-            this.labelTimerDisplay.Size = new System.Drawing.Size(68, 13);
+            this.labelTimerDisplay.Size = new System.Drawing.Size(116, 24);
             this.labelTimerDisplay.TabIndex = 10;
             this.labelTimerDisplay.Text = "00h 00m 00s";
-            this.labelTimerDisplay.Click += new System.EventHandler(this.label6_Click);
             // 
             // labelTimerCategory
             // 
             this.labelTimerCategory.AutoSize = true;
+            this.labelTimerCategory.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelTimerCategory.Location = new System.Drawing.Point(53, 469);
             this.labelTimerCategory.Name = "labelTimerCategory";
-            this.labelTimerCategory.Size = new System.Drawing.Size(67, 13);
+            this.labelTimerCategory.Size = new System.Drawing.Size(119, 24);
             this.labelTimerCategory.TabIndex = 11;
             this.labelTimerCategory.Text = "Sesson timer";
-            this.labelTimerCategory.Click += new System.EventHandler(this.label6_Click_1);
             // 
             // btnHalt
             // 
@@ -174,11 +173,19 @@ namespace Achtsamkeit
             this.btnHalt.UseVisualStyleBackColor = true;
             this.btnHalt.Click += new System.EventHandler(this.btnHalt_Click);
             // 
+            // textBoxTodayUsage
+            // 
+            this.textBoxTodayUsage.Location = new System.Drawing.Point(376, 73);
+            this.textBoxTodayUsage.Name = "textBoxTodayUsage";
+            this.textBoxTodayUsage.Size = new System.Drawing.Size(100, 20);
+            this.textBoxTodayUsage.TabIndex = 13;
+            // 
             // GUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(647, 554);
+            this.Controls.Add(this.textBoxTodayUsage);
             this.Controls.Add(this.btnHalt);
             this.Controls.Add(this.labelTimerCategory);
             this.Controls.Add(this.labelTimerDisplay);
@@ -217,5 +224,6 @@ namespace Achtsamkeit
         private Label labelTimerDisplay;
         private Label labelTimerCategory;
         private Button btnHalt;
+        private TextBox textBoxTodayUsage;
     }
 }

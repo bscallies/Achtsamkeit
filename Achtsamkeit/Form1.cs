@@ -27,8 +27,14 @@ namespace Achtsamkeit
 
             string dataPath = "SessionData.txt"; //Changed path
             sessionHandler = new SessionFileHandler(dataPath);
+            //sessionHandler = new SessionFileHandler("../../../../SessionData.txt");
         }
-
+        private void GUI_Load(object sender, EventArgs e)
+        {
+            treeViewCategories.Nodes.Add("Work");
+            treeViewCategories.Nodes.Add("Recreation");
+            treeViewCategories.Nodes.Add("Goal Focus");
+        }
 
         private void button1_Click(object sender, EventArgs e)
         {
@@ -40,39 +46,11 @@ namespace Achtsamkeit
             }
         }
 
-        private void GUI_Load(object sender, EventArgs e)
+        private void UpdateTodayUsage()
         {
-            treeViewCategories.Nodes.Add("Work");
-            treeViewCategories.Nodes.Add("Recreation");
-            treeViewCategories.Nodes.Add("Goal Focus");
-            /*List<Session> sessions = sessionHandler.LoadSessions();
-
-            foreach (var session in sessions)
-            {
-                TreeNode[] foundNodes = treeViewCategories.Nodes.Find(session.Category, false);
-
-                if (foundNodes.Length == 0)
-                {
-                    TreeNode categoryNode = treeViewCategories.Nodes.Add(session.Category);
-                    if (!string.IsNullOrEmpty(session.SubCategory))
-                    {
-                        categoryNode.Nodes.Add(session.SubCategory);
-                    }
-                }
-                else
-                {
-                    TreeNode categoryNode = foundNodes[0];
-                    if (!string.IsNullOrEmpty(session.SubCategory) && !categoryNode.Nodes.ContainsKey(session.SubCategory))
-                    {
-                        categoryNode.Nodes.Add(session.SubCategory);
-                    }
-                }
-            }*/
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
+            var usageToday = sessionHandler.GetTodayUsageByCategory();
+            textBoxTodayUsage.Text = string.Join(Environment.NewLine,
+                usageToday.Select(kvp => $"{kvp.Key}: {FormFunctions.FormatTimespanIntoDigitalClock(kvp.Value)}"));
         }
         //
         //Begin button
@@ -85,7 +63,6 @@ namespace Achtsamkeit
 
             if (selectedNode != null)
             {
-                // Extract Category and Subcategory from the selected node
                 string category, subcategory;
                 if (selectedNode.Parent == null)
                 {
@@ -99,13 +76,10 @@ namespace Achtsamkeit
                     category = selectedNode.Parent.Text;
                     subcategory = selectedNode.Text;
                 }
-
-                // Update UI
                 labelTimerCategory.Text = $"Timer for: {category} - {subcategory}";
                 ElapsedTimeInSeconds = 0;
                 labelTimerDisplay.Text = "00h 00m 00s";
 
-                // Start the session
                 timer1.Start();
                 currentSession = new Session(DateTime.Now, new TimeSpan(0), category, subcategory);
 
@@ -129,39 +103,8 @@ namespace Achtsamkeit
                 Console.WriteLine("Timer ticked. Saving session."); // Debugging
                 sessionHandler.SaveSession(currentSession);
             }
-            /* //FormFunctions.Timer_Tick(sender, e, labelTimerDisplay);
-             FormFunctions.Timer_Tick(sender, e, labelTimerDisplay);
-             if (currentSession != null)
-             {
-                 // Increase session duration by 1 minute
-                 currentSession.Duration = currentSession.Duration.Add(TimeSpan.FromMinutes(1));
-
-                 // Save updated session
-                 // Assuming sessionHandler is your ISessionHandler instance
-                 sessionHandler.SaveSession(currentSession);
-             }
-
-             //Application.DoEvents();
-             //MessageBox.Show("(test code)Timer activated successfully!");
-            */
+            UpdateTodayUsage();
         }
-
-
-
-        private void label2_Click(object sender, EventArgs e)        {
-
-
-        }
-
-        private void treeViewCategories_AfterSelect(object sender, TreeViewEventArgs e)       {
-        }
-
-        private void label6_Click(object sender, EventArgs e)        {
-        }
-
-        private void label6_Click_1(object sender, EventArgs e)        {
-        }
-
         private void btnHalt_Click(object sender, EventArgs e)
         {
             timer1.Stop();

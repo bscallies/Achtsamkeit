@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+//SessionManager.cs
 namespace Achtsamkeit.Backend
 {
     public class SessionManager
@@ -37,6 +38,25 @@ namespace Achtsamkeit.Backend
         {
             currentSession = null;
         }
-    }
+        public Dictionary<string, TimeSpan> GetTodayUsageByCategory()
+        {
+            var sessions = sessionHandler.LoadSessions();
+            var todaySessions = sessions.Where(s => s.StartTime.Date == DateTime.Now.Date);
+            var categoryUsage = new Dictionary<string, TimeSpan>();
 
+            foreach (var session in todaySessions)
+            {
+                if (categoryUsage.ContainsKey(session.Category))
+                {
+                    categoryUsage[session.Category] += session.Duration;
+                }
+                else
+                {
+                    categoryUsage[session.Category] = session.Duration;
+                }
+            }
+
+            return categoryUsage;
+        }
+    }
 }
