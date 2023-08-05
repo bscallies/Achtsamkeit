@@ -52,9 +52,8 @@ namespace Achtsamkeit
             textBoxTodayUsage.Text = string.Join(Environment.NewLine,
                 usageToday.Select(kvp => $"{kvp.Key}: {FormFunctions.FormatTimespanIntoDigitalClock(kvp.Value)}"));
         }
-        //
+
         //Begin button
-        //
         private SessionManager sessionManager = new SessionManager(new SessionFileHandler("SessionData.txt"));
 
         private void btnBegin_Click(object sender, EventArgs e)
@@ -95,7 +94,7 @@ namespace Achtsamkeit
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            if (currentSession != null)
+            /*if (currentSession != null)
             {
                 ElapsedTimeInSeconds++;
                 currentSession.Duration = TimeSpan.FromSeconds(ElapsedTimeInSeconds);
@@ -103,7 +102,29 @@ namespace Achtsamkeit
                 Console.WriteLine("Timer ticked. Saving session."); // Debugging
                 sessionHandler.SaveSession(currentSession);
             }
-            UpdateTodayUsage();
+            UpdateTodayUsage();*/
+            if (currentSession != null)
+            {
+                ElapsedTimeInSeconds++;
+                currentSession.Duration = TimeSpan.FromSeconds(ElapsedTimeInSeconds);
+                labelTimerDisplay.Text = currentSession.Duration.ToString(@"hh\:mm\:ss");
+
+                // Update total usage.
+                if (sessionHandler is SessionFileHandler sessionFileHandler)
+                {
+                    sessionFileHandler.AddTimeToCategory(currentSession.Category, TimeSpan.FromSeconds(1));
+                    UpdateTodayUsage();
+                }
+            }
+        }
+        private void EndAndSaveSession()
+        {
+            if (currentSession != null)
+            {
+                timer1.Stop();
+                sessionHandler.SaveSession(currentSession);
+                currentSession = null;
+            }
         }
         private void btnHalt_Click(object sender, EventArgs e)
         {
@@ -111,6 +132,11 @@ namespace Achtsamkeit
             btnBegin.Text = "Begin";
             btnBegin.BackColor = Color.Green;
             btnHalt.BackColor = Color.Gray;
+        }
+
+        private void textBoxNewSubcategory_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

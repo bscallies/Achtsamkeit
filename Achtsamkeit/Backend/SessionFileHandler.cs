@@ -1,4 +1,4 @@
-﻿//SessionFileHandler.cs
+﻿
 using System;
 using System.IO;
 using Newtonsoft.Json;
@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Achtsamkeit.Backend;
 
+//SessionFileHandler.cs
 namespace Achtsamkeit.Backend
 {
     public class SessionFileHandler : ISessionHandler
@@ -19,25 +20,41 @@ namespace Achtsamkeit.Backend
             _filePath = filePath;
         }
 
+        public void AddTimeToCategory(string category, TimeSpan duration)
+        {
+            var sessions = LoadSessions();
+            var session = sessions
+                .FirstOrDefault(s => s.StartTime.Date == DateTime.Today && s.Category == category);
+            if (session == null)
+            {
+                session = new Session(DateTime.Today, duration, category, "General");
+                sessions.Add(session);
+            }
+            else
+            {
+                session.Duration += duration;
+            }
+            SaveSessions(sessions);
+        }
         public void SaveSession(Session session)
+        {
+            var sessions = LoadSessions();
+            sessions.Add(session);
+            SaveSessions(sessions);
+        }
+
+        public void SaveSessions(List<Session> sessions)
+        {
+            string jsonData = JsonConvert.SerializeObject(sessions, Formatting.Indented);
+            File.WriteAllText(_filePath, jsonData);
+        }
+        /*public void SaveSessions(Session session)
         {
             List<Session> sessions = LoadSessions();
             sessions.Add(session);
             string jsonData = JsonConvert.SerializeObject(sessions, Formatting.Indented);
             File.WriteAllText(_filePath, jsonData);
-            /*List<Session> sessions = new List<Session>();
-            string jsonData;
-
-            if (File.Exists(_filePath))
-            {
-                jsonData = File.ReadAllText(_filePath); 
-                sessions = JsonConvert.DeserializeObject<List<Session>>(jsonData);
-            }
-
-            sessions.Add(session);
-            jsonData = JsonConvert.SerializeObject(sessions, Formatting.Indented); 
-            File.WriteAllText(_filePath, jsonData);*/
-        }
+        }*/
 
         public List<Session> LoadSessions()
         {
