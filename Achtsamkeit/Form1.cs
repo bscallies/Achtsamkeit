@@ -7,7 +7,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
+using Newtonsoft.Json;
 using Achtsamkeit.Backend;
+
 
 namespace Achtsamkeit
 {
@@ -17,6 +20,7 @@ namespace Achtsamkeit
         public static int ElapsedTimeInSeconds { get; set; }
         private ISessionHandler sessionHandler;
         private Session currentSession;
+        private CategoryManager categoryManager = new CategoryManager();
 
         public GUI()
         {
@@ -26,9 +30,24 @@ namespace Achtsamkeit
             FormFunctions.SetTodayDate(this, labelTodayDate);
 
             string dataPath = "SessionData.txt"; //Changed path
+            Console.WriteLine(Path.GetFullPath("SessionData.txt"));
             sessionHandler = new SessionFileHandler(dataPath);
-            //sessionHandler = new SessionFileHandler("../../../../SessionData.txt");
+
+            if (File.Exists("categories.json"))
+            {
+                var categories = JsonConvert.DeserializeObject<List<Category>>(File.ReadAllText("categories.json"));
+                foreach (var category in categories)
+                {
+                    var categoryNode = treeViewCategories.Nodes.Add(category.Name);
+                    foreach (var subcategory in category.Subcategories)
+                    {
+                        categoryNode.Nodes.Add(subcategory);
+                    }
+                }
+                Console.WriteLine(Path.GetFullPath("categories.json"));
+            }
         }
+
         private void GUI_Load(object sender, EventArgs e)
         {
             treeViewCategories.Nodes.Add("Work");
@@ -45,22 +64,7 @@ namespace Achtsamkeit
                 textBoxNewSubcategory.Clear();
             }
         }
-
-        /*private void UpdateTodayUsage()
-        {
-            var usageToday = sessionHandler.GetTodayUsageByCategory();
-            textBoxTodayUsage.Text = string.Join(Environment.NewLine,
-                usageToday.Select(kvp => $"{kvp.Key}: {FormFunctions.FormatTimespanIntoDigitalClock(kvp.Value)}"));
-        }
-        private void UpdateTodayUsage()
-        {
-            if (sessionHandler is SessionFileHandler sessionFileHandler)
-            {
-                var usageToday = sessionFileHandler.GetTodayUsageByCategoryAndSubcategory();
-                textBoxTodayUsage.Text = string.Join(Environment.NewLine,
-                    usageToday.Select(kvp => $"{kvp.Key}: {FormFunctions.FormatTimespanIntoDigitalClock(kvp.Value)}"));
-            }
-        }*/
+      
         private void UpdateTodayUsage()
         {
             if (sessionHandler is SessionFileHandler sessionFileHandler)
@@ -75,11 +79,12 @@ namespace Achtsamkeit
                     totalUsage += time;
                 }
 
-                // Append total usage to the end of the display
-                /*textBoxTodayUsage*/.Text = string.Join(Environment.NewLine, usageTodayText) +
+                // Add total usage to the end
+                textBoxTodayUsage.Text = string.Join(Environment.NewLine, usageTodayText) +
                                          Environment.NewLine + $"Total: {FormFunctions.FormatTimespanIntoDigitalClock(totalUsage)}";
             }
         }
+
 
 
 
@@ -88,23 +93,23 @@ namespace Achtsamkeit
 
         private void btnBegin_Click(object sender, EventArgs e)
         {
-            TreeNode selectedNode = treeViewCategories.SelectedNode;
-
-            if (selectedNode != null)
+            TreeNode selectedCategoryNode = treeViewCategories.SelectedNode;
+            if (selectedCategoryNode != null)
             {
-                string category, subcategory;
-                if (selectedNode.Parent == null)
-                {
-                    // This is a root node, meaning it's a category
-                    category = selectedNode.Text;
-                    subcategory = "General"; // Default subcategory
-                }
-                else
-                {
-                    // This is a child node, meaning it's a subcategory
-                    category = selectedNode.Parent.Text;
-                    subcategory = selectedNode.Text;
-                }
+                string category;
+                string subcategory;
+                HandleNewSession(selectedCategoryNode, out category, out subcategory);
+
+                // Save categories and subcategories to a file.
+                List<Category> categories = treeViewCategories.Nodes
+                    .Cast<TreeNode>()
+                    .Select(n => new Category
+                    {
+                        Name = n.Text,
+                        Subcategories = n.Nodes.Cast<TreeNode>().Select(s => s.Text).ToList()
+                    }).ToList();
+                File.WriteAllText("categories.json", JsonConvert.SerializeObject(categories));
+
                 labelTimerCategory.Text = $"Timer for: {category} - {subcategory}";
                 ElapsedTimeInSeconds = 0;
                 labelTimerDisplay.Text = "00h 00m 00s";
@@ -116,23 +121,17 @@ namespace Achtsamkeit
                 btnBegin.BackColor = Color.Yellow;
                 btnHalt.BackColor = Color.Red;
             }
-            else
-            {
-                MessageBox.Show("Please select a category before clicking Begin.", "Category Selection", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
+        }
+        private void HandleNewSession(TreeNode selectedCategoryNode, out string category, out string subcategory)
+        {
+            categoryManager.GetCategoryAndSubcategory(selectedCategoryNode, textBoxNewSubcategory.Text, out category, out subcategory);
+            List<Category> categories = categoryManager.GetCategoriesFromTreeView(treeViewCategories.Nodes);
+            // Call the method in SessionManager with the extracted category and subcategory
+            sessionManager.HandleNewSession(category, subcategory);
         }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            /*if (currentSession != null)
-            {
-                ElapsedTimeInSeconds++;
-                currentSession.Duration = TimeSpan.FromSeconds(ElapsedTimeInSeconds);
-                labelTimerDisplay.Text = currentSession.Duration.ToString(@"hh\:mm\:ss");
-                Console.WriteLine("Timer ticked. Saving session."); // Debugging
-                sessionHandler.SaveSession(currentSession);
-            }
-            UpdateTodayUsage();*/
             if (currentSession != null)
             {
                 ElapsedTimeInSeconds++;

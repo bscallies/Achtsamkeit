@@ -19,3 +19,21 @@ namespace Achtsamkeit
         }
     }
 }
+
+
+/* 
+ * NameSpace Achtsamkeit.Backend:
+Category.cs
+CategoryManger.cs
+ISessionHandler.cs
+Session.cs
+SessionFileHandler.cs
+SessionManager.cs
+User.cs
+
+* NameSpace Achtsamkeit
+* Form1.cs
+* Form1.Designer.cs
+* Form1.resx
+* FormFunctions.cs
+* Program.cs */
