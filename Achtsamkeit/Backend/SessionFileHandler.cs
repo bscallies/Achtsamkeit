@@ -85,7 +85,7 @@ namespace Achtsamkeit.Backend
 
             return sessionsToday;
         }
-        public Dictionary<string, TimeSpan> GetTodayUsageByCategoryAndSubcategory()
+        /*public Dictionary<string, TimeSpan> GetTodayUsageByCategoryAndSubcategory()
         {
             var sessionsToday = LoadSessions()
                 .Where(session => session.StartTime.Date == DateTime.Today)
@@ -93,6 +93,17 @@ namespace Achtsamkeit.Backend
                 .ToDictionary(
                     group => $"{group.Key.Category} - {group.Key.Subcategory}",
                     group => new TimeSpan(group.Sum(session => session.Duration.Ticks)));
+
+            return sessionsToday;
+        }*/
+        public Dictionary<(string, string), TimeSpan> GetTodayUsageByCategoryAndSubcategory()
+        {
+            var sessionsToday = LoadSessions()
+                               .Where(session => session.StartTime.Date == DateTime.Today)
+                               .GroupBy(session => (session.Category, session.Subcategory))
+                               .ToDictionary(
+                                   group => (group.Key.Category, group.Key.Subcategory),
+                                   group => new TimeSpan(group.Sum(session => session.Duration.Ticks)));
 
             return sessionsToday;
         }

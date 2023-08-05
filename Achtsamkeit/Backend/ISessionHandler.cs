@@ -13,6 +13,7 @@ namespace Achtsamkeit.Backend
         void SaveSession(Session session);
         List<Session> LoadSessions();
         Dictionary<string, TimeSpan> GetTodayUsageByCategory();
-        Dictionary<string, TimeSpan> GetTodayUsageByCategoryAndSubcategory();
+        //Dictionary<string, TimeSpan> GetTodayUsageByCategoryAndSubcategory();
+        Dictionary<(string, string), TimeSpan> GetTodayUsageByCategoryAndSubcategory();
     }
 }

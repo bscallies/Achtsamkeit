@@ -36,4 +36,8 @@ User.cs
 * Form1.Designer.cs
 * Form1.resx
 * FormFunctions.cs
-* Program.cs */
+* Program.cs 
+
+ 
+ Application data is saved in bin/debug
+ */

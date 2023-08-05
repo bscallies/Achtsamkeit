@@ -94,8 +94,5 @@
   <ItemGroup>
     <Folder Include="Frontend\" />
   </ItemGroup>
-  <ItemGroup>
-    <Content Include="SessionData.txt" />
-  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
