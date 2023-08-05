@@ -48,13 +48,6 @@ namespace Achtsamkeit.Backend
             string jsonData = JsonConvert.SerializeObject(sessions, Formatting.Indented);
             File.WriteAllText(_filePath, jsonData);
         }
-        /*public void SaveSessions(Session session)
-        {
-            List<Session> sessions = LoadSessions();
-            sessions.Add(session);
-            string jsonData = JsonConvert.SerializeObject(sessions, Formatting.Indented);
-            File.WriteAllText(_filePath, jsonData);
-        }*/
 
         public List<Session> LoadSessions()
         {
@@ -88,6 +81,17 @@ namespace Achtsamkeit.Backend
                 .GroupBy(session => session.Category)
                 .ToDictionary(
                     group => group.Key,
+                    group => new TimeSpan(group.Sum(session => session.Duration.Ticks)));
+
+            return sessionsToday;
+        }
+        public Dictionary<string, TimeSpan> GetTodayUsageByCategoryAndSubcategory()
+        {
+            var sessionsToday = LoadSessions()
+                .Where(session => session.StartTime.Date == DateTime.Today)
+                .GroupBy(session => new { session.Category, session.Subcategory })
+                .ToDictionary(
+                    group => $"{group.Key.Category} - {group.Key.Subcategory}",
                     group => new TimeSpan(group.Sum(session => session.Duration.Ticks)));
 
             return sessionsToday;

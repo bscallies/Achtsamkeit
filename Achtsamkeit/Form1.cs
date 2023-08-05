@@ -46,12 +46,42 @@ namespace Achtsamkeit
             }
         }
 
-        private void UpdateTodayUsage()
+        /*private void UpdateTodayUsage()
         {
             var usageToday = sessionHandler.GetTodayUsageByCategory();
             textBoxTodayUsage.Text = string.Join(Environment.NewLine,
                 usageToday.Select(kvp => $"{kvp.Key}: {FormFunctions.FormatTimespanIntoDigitalClock(kvp.Value)}"));
         }
+        private void UpdateTodayUsage()
+        {
+            if (sessionHandler is SessionFileHandler sessionFileHandler)
+            {
+                var usageToday = sessionFileHandler.GetTodayUsageByCategoryAndSubcategory();
+                textBoxTodayUsage.Text = string.Join(Environment.NewLine,
+                    usageToday.Select(kvp => $"{kvp.Key}: {FormFunctions.FormatTimespanIntoDigitalClock(kvp.Value)}"));
+            }
+        }*/
+        private void UpdateTodayUsage()
+        {
+            if (sessionHandler is SessionFileHandler sessionFileHandler)
+            {
+                var usageToday = sessionFileHandler.GetTodayUsageByCategoryAndSubcategory();
+                var usageTodayText = usageToday.Select(kvp => $"{kvp.Key}: {FormFunctions.FormatTimespanIntoDigitalClock(kvp.Value)}");
+
+                // Calculate total usage
+                TimeSpan totalUsage = TimeSpan.Zero;
+                foreach (var time in usageToday.Values)
+                {
+                    totalUsage += time;
+                }
+
+                // Append total usage to the end of the display
+                /*textBoxTodayUsage*/.Text = string.Join(Environment.NewLine, usageTodayText) +
+                                         Environment.NewLine + $"Total: {FormFunctions.FormatTimespanIntoDigitalClock(totalUsage)}";
+            }
+        }
+
+
 
         //Begin button
         private SessionManager sessionManager = new SessionManager(new SessionFileHandler("SessionData.txt"));

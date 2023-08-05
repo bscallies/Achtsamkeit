@@ -126,9 +126,9 @@ namespace Achtsamkeit
             this.labelTodayDate.ForeColor = System.Drawing.SystemColors.GradientActiveCaption;
             this.labelTodayDate.Location = new System.Drawing.Point(361, 19);
             this.labelTodayDate.Name = "labelTodayDate";
-            this.labelTodayDate.Size = new System.Drawing.Size(60, 24);
+            this.labelTodayDate.Size = new System.Drawing.Size(117, 24);
             this.labelTodayDate.TabIndex = 9;
-            this.labelTodayDate.Text = "label6";
+            this.labelTodayDate.Text = "Today\'s date";
             // 
             // timer1
             // 
@@ -174,7 +174,7 @@ namespace Achtsamkeit
             this.textBoxTodayUsage.Location = new System.Drawing.Point(365, 99);
             this.textBoxTodayUsage.Multiline = true;
             this.textBoxTodayUsage.Name = "textBoxTodayUsage";
-            this.textBoxTodayUsage.Size = new System.Drawing.Size(213, 345);
+            this.textBoxTodayUsage.Size = new System.Drawing.Size(213, 338);
             this.textBoxTodayUsage.TabIndex = 13;
             // 
             // label7
