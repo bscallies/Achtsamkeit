@@ -20,7 +20,6 @@ namespace Achtsamkeit
         public static void Timer_Tick(object sender, EventArgs e, Label labelTimerDisplay)
         {           
             GUI.ElapsedTimeInSeconds++;
-            //labelTimerDisplay.Text = GUI.ElapsedTimeInSeconds.ToString();
             string formattedTime = FormatElapsedTime(GUI.ElapsedTimeInSeconds);
             labelTimerDisplay.Text = formattedTime;
         }

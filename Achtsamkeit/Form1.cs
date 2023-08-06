@@ -74,7 +74,6 @@ namespace Achtsamkeit
             if (sessionHandler is SessionFileHandler sessionFileHandler)
             {
                 var usageToday = sessionFileHandler.GetTodayUsageByCategoryAndSubcategory();
-                //var usageTodayText = usageToday.Select(kvp => $"{kvp.Key}: {FormFunctions.FormatTimespanIntoDigitalClock(kvp.Value)}");
                 var usageTodayText = usageToday.Select(kvp => $"{kvp.Key.Item1} - {kvp.Key.Item2}: {FormFunctions.FormatTimespanIntoDigitalClock(kvp.Value)}");
 
 
@@ -215,12 +214,10 @@ namespace Achtsamkeit
             {
                 if (uniqueCategories.Contains(node.Text))
                 {
-                    // If the category already exists, remove the node from the tree view
                     treeViewCategories.Nodes.Remove(node);
                 }
                 else
                 {
-                    // If the category doesn't exist yet, add it to the unique categories set
                     uniqueCategories.Add(node.Text);
                 }
             }

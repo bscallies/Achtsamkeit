@@ -76,5 +76,5 @@ User.cs
 * Program.cs 
 
  
- Application data is saved in bin/debug
+ Session data is saved in bin/debug
  */
