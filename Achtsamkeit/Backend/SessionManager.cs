@@ -23,7 +23,6 @@ namespace Achtsamkeit.Backend
             sessionHandler.SaveSession(currentSession);
         }
 
-        //New
         public void HandleNewSession(string category, string subcategory)
         {
             BeginSession(category, subcategory);

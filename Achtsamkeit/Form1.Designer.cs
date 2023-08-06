@@ -48,6 +48,8 @@ namespace Achtsamkeit
             this.label7 = new System.Windows.Forms.Label();
             this.label6 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
+            this.textBoxStatistics = new System.Windows.Forms.TextBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -63,18 +65,18 @@ namespace Achtsamkeit
             // 
             // treeViewCategories
             // 
-            this.treeViewCategories.BackColor = System.Drawing.SystemColors.WindowFrame;
+            this.treeViewCategories.BackColor = System.Drawing.SystemColors.InfoText;
             this.treeViewCategories.ForeColor = System.Drawing.SystemColors.Info;
-            this.treeViewCategories.Location = new System.Drawing.Point(49, 118);
+            this.treeViewCategories.Location = new System.Drawing.Point(20, 118);
             this.treeViewCategories.Name = "treeViewCategories";
-            this.treeViewCategories.Size = new System.Drawing.Size(266, 210);
+            this.treeViewCategories.Size = new System.Drawing.Size(232, 210);
             this.treeViewCategories.TabIndex = 1;
             // 
             // label2
             // 
             this.label2.AutoSize = true;
             this.label2.ForeColor = System.Drawing.SystemColors.InactiveBorder;
-            this.label2.Location = new System.Drawing.Point(32, 341);
+            this.label2.Location = new System.Drawing.Point(17, 418);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(102, 13);
             this.label2.TabIndex = 2;
@@ -84,15 +86,15 @@ namespace Achtsamkeit
             // 
             this.textBoxNewSubcategory.BackColor = System.Drawing.SystemColors.WindowFrame;
             this.textBoxNewSubcategory.ForeColor = System.Drawing.SystemColors.Info;
-            this.textBoxNewSubcategory.Location = new System.Drawing.Point(140, 338);
+            this.textBoxNewSubcategory.Location = new System.Drawing.Point(18, 434);
             this.textBoxNewSubcategory.Name = "textBoxNewSubcategory";
-            this.textBoxNewSubcategory.Size = new System.Drawing.Size(155, 20);
+            this.textBoxNewSubcategory.Size = new System.Drawing.Size(189, 20);
             this.textBoxNewSubcategory.TabIndex = 3;
             this.textBoxNewSubcategory.TextChanged += new System.EventHandler(this.textBoxNewSubcategory_TextChanged);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(301, 336);
+            this.button1.Location = new System.Drawing.Point(213, 431);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(39, 23);
             this.button1.TabIndex = 4;
@@ -111,9 +113,10 @@ namespace Achtsamkeit
             // btnBegin
             // 
             this.btnBegin.BackColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.btnBegin.Location = new System.Drawing.Point(49, 373);
+            this.btnBegin.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnBegin.Location = new System.Drawing.Point(20, 334);
             this.btnBegin.Name = "btnBegin";
-            this.btnBegin.Size = new System.Drawing.Size(200, 64);
+            this.btnBegin.Size = new System.Drawing.Size(171, 64);
             this.btnBegin.TabIndex = 7;
             this.btnBegin.Text = "Begin Session!";
             this.btnBegin.UseVisualStyleBackColor = false;
@@ -124,7 +127,7 @@ namespace Achtsamkeit
             this.labelTodayDate.AutoSize = true;
             this.labelTodayDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelTodayDate.ForeColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.labelTodayDate.Location = new System.Drawing.Point(361, 19);
+            this.labelTodayDate.Location = new System.Drawing.Point(276, 19);
             this.labelTodayDate.Name = "labelTodayDate";
             this.labelTodayDate.Size = new System.Drawing.Size(117, 24);
             this.labelTodayDate.TabIndex = 9;
@@ -138,43 +141,46 @@ namespace Achtsamkeit
             // labelTimerDisplay
             // 
             this.labelTimerDisplay.AutoSize = true;
-            this.labelTimerDisplay.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.labelTimerDisplay.Font = new System.Drawing.Font("Microsoft Sans Serif", 21.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelTimerDisplay.ForeColor = System.Drawing.SystemColors.InactiveBorder;
-            this.labelTimerDisplay.Location = new System.Drawing.Point(316, 458);
+            this.labelTimerDisplay.Location = new System.Drawing.Point(43, 518);
             this.labelTimerDisplay.Name = "labelTimerDisplay";
-            this.labelTimerDisplay.Size = new System.Drawing.Size(116, 24);
+            this.labelTimerDisplay.Size = new System.Drawing.Size(183, 33);
             this.labelTimerDisplay.TabIndex = 10;
             this.labelTimerDisplay.Text = "00h 00m 00s";
+            this.labelTimerDisplay.Click += new System.EventHandler(this.labelTimerDisplay_Click);
             // 
             // labelTimerCategory
             // 
             this.labelTimerCategory.AutoSize = true;
             this.labelTimerCategory.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelTimerCategory.ForeColor = System.Drawing.SystemColors.HighlightText;
-            this.labelTimerCategory.Location = new System.Drawing.Point(45, 458);
+            this.labelTimerCategory.Location = new System.Drawing.Point(14, 480);
             this.labelTimerCategory.Name = "labelTimerCategory";
             this.labelTimerCategory.Size = new System.Drawing.Size(119, 24);
             this.labelTimerCategory.TabIndex = 11;
             this.labelTimerCategory.Text = "Sesson timer";
+            this.labelTimerCategory.Click += new System.EventHandler(this.labelTimerCategory_Click);
             // 
             // btnHalt
             // 
-            this.btnHalt.Location = new System.Drawing.Point(255, 373);
+            this.btnHalt.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnHalt.Location = new System.Drawing.Point(197, 334);
             this.btnHalt.Name = "btnHalt";
-            this.btnHalt.Size = new System.Drawing.Size(76, 64);
+            this.btnHalt.Size = new System.Drawing.Size(55, 64);
             this.btnHalt.TabIndex = 12;
-            this.btnHalt.Text = "Halt\r\n(Stop)";
+            this.btnHalt.Text = "Halt\r";
             this.btnHalt.UseVisualStyleBackColor = true;
             this.btnHalt.Click += new System.EventHandler(this.btnHalt_Click);
             // 
             // textBoxTodayUsage
             // 
-            this.textBoxTodayUsage.BackColor = System.Drawing.SystemColors.WindowFrame;
+            this.textBoxTodayUsage.BackColor = System.Drawing.SystemColors.MenuText;
             this.textBoxTodayUsage.ForeColor = System.Drawing.SystemColors.Window;
-            this.textBoxTodayUsage.Location = new System.Drawing.Point(365, 99);
+            this.textBoxTodayUsage.Location = new System.Drawing.Point(280, 94);
             this.textBoxTodayUsage.Multiline = true;
             this.textBoxTodayUsage.Name = "textBoxTodayUsage";
-            this.textBoxTodayUsage.Size = new System.Drawing.Size(213, 338);
+            this.textBoxTodayUsage.Size = new System.Drawing.Size(213, 170);
             this.textBoxTodayUsage.TabIndex = 13;
             // 
             // label7
@@ -193,7 +199,7 @@ namespace Achtsamkeit
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label6.ForeColor = System.Drawing.SystemColors.Info;
-            this.label6.Location = new System.Drawing.Point(362, 67);
+            this.label6.Location = new System.Drawing.Point(277, 67);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(140, 24);
             this.label6.TabIndex = 15;
@@ -210,12 +216,36 @@ namespace Achtsamkeit
             this.label5.TabIndex = 16;
             this.label5.Text = "Mindfulness";
             // 
+            // textBoxStatistics
+            // 
+            this.textBoxStatistics.BackColor = System.Drawing.SystemColors.InfoText;
+            this.textBoxStatistics.ForeColor = System.Drawing.SystemColors.Menu;
+            this.textBoxStatistics.Location = new System.Drawing.Point(280, 317);
+            this.textBoxStatistics.Multiline = true;
+            this.textBoxStatistics.Name = "textBoxStatistics";
+            this.textBoxStatistics.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.textBoxStatistics.Size = new System.Drawing.Size(212, 204);
+            this.textBoxStatistics.TabIndex = 17;
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.SystemColors.Info;
+            this.label4.Location = new System.Drawing.Point(276, 285);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(108, 29);
+            this.label4.TabIndex = 18;
+            this.label4.Text = "Statistics";
+            // 
             // GUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.MenuText;
-            this.ClientSize = new System.Drawing.Size(610, 526);
+            this.ClientSize = new System.Drawing.Size(527, 577);
+            this.Controls.Add(this.label4);
+            this.Controls.Add(this.textBoxStatistics);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.label7);
@@ -258,5 +288,7 @@ namespace Achtsamkeit
         private Label label7;
         private Label label6;
         private Label label5;
+        private TextBox textBoxStatistics;
+        private Label label4;
     }
 }

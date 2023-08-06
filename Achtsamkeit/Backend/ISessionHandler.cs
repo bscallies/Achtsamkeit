@@ -15,5 +15,8 @@ namespace Achtsamkeit.Backend
         Dictionary<string, TimeSpan> GetTodayUsageByCategory();
         //Dictionary<string, TimeSpan> GetTodayUsageByCategoryAndSubcategory();
         Dictionary<(string, string), TimeSpan> GetTodayUsageByCategoryAndSubcategory();
+
+        TimeSpan GetTotalDurationForLast7Days();
+
     }
 }

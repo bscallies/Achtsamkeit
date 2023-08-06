@@ -85,17 +85,7 @@ namespace Achtsamkeit.Backend
 
             return sessionsToday;
         }
-        /*public Dictionary<string, TimeSpan> GetTodayUsageByCategoryAndSubcategory()
-        {
-            var sessionsToday = LoadSessions()
-                .Where(session => session.StartTime.Date == DateTime.Today)
-                .GroupBy(session => new { session.Category, session.Subcategory })
-                .ToDictionary(
-                    group => $"{group.Key.Category} - {group.Key.Subcategory}",
-                    group => new TimeSpan(group.Sum(session => session.Duration.Ticks)));
-
-            return sessionsToday;
-        }*/
+       
         public Dictionary<(string, string), TimeSpan> GetTodayUsageByCategoryAndSubcategory()
         {
             var sessionsToday = LoadSessions()
@@ -107,5 +97,51 @@ namespace Achtsamkeit.Backend
 
             return sessionsToday;
         }
+
+        public Dictionary<string, TimeSpan> GetUsageByCategory()
+        {
+            var sessions = LoadSessions()
+                .GroupBy(session => session.Category)
+                .ToDictionary(
+                                   group => group.Key,
+                                                      group => new TimeSpan(group.Sum(session => session.Duration.Ticks)));
+
+            return sessions;
+        }
+
+        public TimeSpan GetAverageDurationForDay(DateTime day)
+        {
+            var sessionsOnDay = LoadSessions()
+                                .Where(session => session.StartTime.Date == day.Date);
+            if (!sessionsOnDay.Any())
+                return TimeSpan.Zero;
+
+            long totalTicks = sessionsOnDay.Sum(session => session.Duration.Ticks);
+            return new TimeSpan(totalTicks);
+        }
+        public TimeSpan GetTotalDurationForLast7Days()
+        {
+            DateTime today = DateTime.Today;
+            DateTime sevenDaysAgo = today.AddDays(-7);
+            var sessionsInLast7Days = LoadSessions()
+                .Where(session => session.StartTime.Date >= sevenDaysAgo && session.StartTime.Date < today);
+            TimeSpan totalDuration = new TimeSpan(sessionsInLast7Days.Sum(session => session.Duration.Ticks));
+            return totalDuration;
+        }
+
+        public TimeSpan GetAverageDurationForLast7Days()
+        {
+            DateTime today = DateTime.Today;
+            var sessionsInLast7Days = LoadSessions()
+                                      .Where(session => session.StartTime.Date >= today.AddDays(-7) &&
+                                                        session.StartTime.Date < today);
+            if (!sessionsInLast7Days.Any())
+                return TimeSpan.Zero;
+
+            int uniqueDays = sessionsInLast7Days.Select(session => session.StartTime.Date).Distinct().Count();
+            long totalTicks = sessionsInLast7Days.Sum(session => session.Duration.Ticks);
+            return new TimeSpan(totalTicks / uniqueDays);
+        }
+
     }
 }
