@@ -127,7 +127,7 @@ namespace Achtsamkeit
             this.labelTodayDate.AutoSize = true;
             this.labelTodayDate.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.labelTodayDate.ForeColor = System.Drawing.SystemColors.GradientActiveCaption;
-            this.labelTodayDate.Location = new System.Drawing.Point(276, 19);
+            this.labelTodayDate.Location = new System.Drawing.Point(249, 32);
             this.labelTodayDate.Name = "labelTodayDate";
             this.labelTodayDate.Size = new System.Drawing.Size(117, 24);
             this.labelTodayDate.TabIndex = 9;
@@ -148,7 +148,6 @@ namespace Achtsamkeit
             this.labelTimerDisplay.Size = new System.Drawing.Size(183, 33);
             this.labelTimerDisplay.TabIndex = 10;
             this.labelTimerDisplay.Text = "00h 00m 00s";
-            this.labelTimerDisplay.Click += new System.EventHandler(this.labelTimerDisplay_Click);
             // 
             // labelTimerCategory
             // 
@@ -160,7 +159,6 @@ namespace Achtsamkeit
             this.labelTimerCategory.Size = new System.Drawing.Size(119, 24);
             this.labelTimerCategory.TabIndex = 11;
             this.labelTimerCategory.Text = "Sesson timer";
-            this.labelTimerCategory.Click += new System.EventHandler(this.labelTimerCategory_Click);
             // 
             // btnHalt
             // 

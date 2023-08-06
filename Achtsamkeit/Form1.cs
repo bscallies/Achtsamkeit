@@ -27,6 +27,7 @@ namespace Achtsamkeit
             InitializeComponent();
 
             timer1.Tick += timer1_Tick;
+            timer1.Tick += (s, e) => UpdateStatistics();
             FormFunctions.SetTodayDate(this, labelTodayDate);
 
             string dataPath = "SessionData.txt"; //Changed path
@@ -96,19 +97,23 @@ namespace Achtsamkeit
             {
                 // Get the stats
                 DateTime today = DateTime.Today;
-                TimeSpan avgDurationToday = sessionFileHandler.GetAverageDurationForDay(today);
                 TimeSpan totalDurationLast7Days = sessionFileHandler.GetTotalDurationForLast7Days();
                 TimeSpan avgDurationLast7Days = sessionFileHandler.GetAverageDurationForLast7Days();
 
                 // Format the stats
-                string avgDurationTodayText = FormFunctions.FormatTimespanIntoDigitalClock(avgDurationToday);
                 string totalDurationLast7DaysText = FormFunctions.FormatTimespanIntoDigitalClock(totalDurationLast7Days);
                 string avgDurationLast7DaysText = FormFunctions.FormatTimespanIntoDigitalClock(avgDurationLast7Days);
 
                 // Display the stats
-                textBoxStatistics.Text = $"Average Duration Today: {avgDurationTodayText}" + Environment.NewLine +
-                                         $"Total Duration Last 7 Days: {totalDurationLast7DaysText}" + Environment.NewLine +
+                textBoxStatistics.Text = $"Total Duration Last 7 Days: {totalDurationLast7DaysText}" + Environment.NewLine +
                                          $"Average Duration Last 7 Days: {avgDurationLast7DaysText}";
+
+                var totalDurationLast7DaysByCategory = sessionFileHandler.GetTotalDurationForLast7DaysByCategory();
+
+                foreach (var kvp in totalDurationLast7DaysByCategory)
+                {
+                    textBoxStatistics.Text += Environment.NewLine + $"Category {kvp.Key} Total Duration Last 7 Days: {FormFunctions.FormatTimespanIntoDigitalClock(kvp.Value)}";
+                }
             }
         }
 
@@ -219,16 +224,6 @@ namespace Achtsamkeit
                     uniqueCategories.Add(node.Text);
                 }
             }
-        }
-
-        private void labelTimerDisplay_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void labelTimerCategory_Click(object sender, EventArgs e)
-        {
-
         }
     }
 }
